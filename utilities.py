@@ -1,13 +1,19 @@
 # Utilities
 from pandas import DataFrame
-
 from time import time, mktime
 from datetime import datetime
 import urllib.parse
 from typing import Optional, Dict, Any, List
-
+from binance.client import Client
+from pandas import to_datetime
+import pathlib
 from requests import Request, Session, Response
 import hmac
+
+
+CURRENT_PATH = str(pathlib.Path(__file__).parent)
+
+
 
 def get_data_binance(symbol: str, kline_size: str, init_date: str, save=False) -> DataFrame:
     """ This function downloads the data available for the given symbol and
