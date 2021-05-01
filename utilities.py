@@ -10,10 +10,7 @@ import pathlib
 from requests import Request, Session, Response
 import hmac
 
-
 CURRENT_PATH = str(pathlib.Path(__file__).parent)
-
-
 
 def get_data_binance(symbol: str, kline_size: str, init_date: str, save=False) -> DataFrame:
     """ This function downloads the data available for the given symbol and
@@ -90,13 +87,14 @@ def str_to_EPOX(date: str) -> int:
 class FtxClient:
 
     _ENDPOINT = 'https://ftx.com/api/'
-    FTX_key = "tJiM28KoZUBb_ESuw9bLSCCKesm0xQ8kEX4gAthO"
-    FTX_secret = "BIAT0328EvQhP4n_-ZoX44rwSSO15XAGEDLpnUW0"
 
-    def __init__(self, base_url=None, api_key=None, api_secret=None, subaccount_name=None) -> None:
+    def __init__(self, 
+                 api_key="tJiM28KoZUBb_ESuw9bLSCCKesm0xQ8kEX4gAthO", 
+                 api_secret="BIAT0328EvQhP4n_-ZoX44rwSSO15XAGEDLpnUW0", 
+                 subaccount_name=None) -> None:
         self._session = Session()
-        self._api_key = FTX_key
-        self._api_secret = FTX_secret
+        self._api_key = api_key
+        self._api_secret = api_secret
         self._subaccount_name = subaccount_name
 
     def _get(self, path: str, params: Optional[Dict[str, Any]] = None) -> Any:
@@ -141,9 +139,20 @@ class FtxClient:
 
     # start_time + resolution
     def get_historical_data(self, market_name: str, 
-                            resolution: int, 
-                            limit: int, 
-                            start_time: float, 
-                            end_time: float) -> dict:
-        return self._get(f'markets/{market_name}/candles', dict(resolution=resolution,limit=limit,start_time=start_time,end_time=end_time))
+                                resolution: int, 
+                                limit: int, 
+                                start_time: float, 
+                                end_time: float) -> dict:
+        """""
+        market_name: name of the market
+        resolution: timeframe (in seconds)
+        limit: request per second (do 35)
+        start_time: Initial date 
+        end_time: Final Date
+        """""
+        params = dict(resolution=resolution,
+                      limit=limit,
+                      start_time=start_time,
+                      end_time=end_time)
+        return self._get(f'markets/{market_name}/candles', params)
 
