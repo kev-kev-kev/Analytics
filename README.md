@@ -1,2 +1,2 @@
-# Analytics
- Analytics To Upload To TradingView
+# Indices
+Crypto Indices for TradingView
