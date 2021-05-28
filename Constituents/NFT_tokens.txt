@@ -7,3 +7,10 @@ BINANCE:AXSUSDT
 
 HUOBI:FLOWUSDT
 HUOBI:WAXPUSDT
+
+NFT_index = allocation_NFT * (THETA_ratio * binance_THETA
+                              +  CHZ_ratio * binance_CHZ
+                              +  MANA_ratio * binance_MANA
+                              +  ENJ_ratio * binance_ENJ
+                              +  SAND_ratio * binance_SAND
+                              +  AXS_ratio * binance_AXS)

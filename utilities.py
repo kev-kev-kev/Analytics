@@ -140,7 +140,7 @@ class FtxClient:
     # start_time + resolution
     def get_historical_data(self, market_name: str, 
                                 resolution: int, 
-                                limit: int, 
+                                # limit: int, 
                                 start_time: float, 
                                 end_time: float) -> dict:
         """""
@@ -151,8 +151,25 @@ class FtxClient:
         end_time: Final Date
         """""
         params = dict(resolution=resolution,
-                      limit=limit,
+                    #   limit=limit,
                       start_time=start_time,
                       end_time=end_time)
         return self._get(f'markets/{market_name}/candles', params)
 
+def max_drawdown(price_series : DataFrame) -> float:
+    roll_max = price_series.cummax()
+    daily_drawdown = price_series/roll_max - 1.0
+    max_daily_drawdown = daily_drawdown.cummin()
+    return max_daily_drawdown
+
+def max_bounce(price_series : DataFrame) -> float:
+    roll_min = price_series.cummin()
+    daily_bounce = price_series/roll_min - 1.0
+    max_daily_bounce = daily_bounce.cummax()
+    return max_daily_bounce
+
+def pct_from_local_high(price_series : DataFrame) -> float:
+    max_price = price_series.max()
+    current_price = float(price_series.iloc[-1])
+    pct_from_local_high = current_price/max_price - 1
+    return pct_from_local_high
